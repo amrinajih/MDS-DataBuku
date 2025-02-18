@@ -1,0 +1,281 @@
+---
+title: "DataBaseBuku"
+author: "Amri Luthfi Najih (M0501241057)"
+date: "2025-02-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE}
+library(DBI)
+library(RMySQL)
+library(glue)
+```
+
+```{r}
+# 1. Konfigurasi Database DBngin
+db_config <- list(
+ host = "127.0.0.1",
+  port = 3306,          # Port MySQL di DBngin
+  user = "root",
+  password = "",
+  dbname = "mds_db_buku"    # Nama database yang akan dibuat
+)
+
+```
+
+## langkah 2,3,4 tidak perlu di run jika sudah buat database
+
+```{r}
+# 2. Membuat koneksi ke MySQL server (tanpa database spesifik)
+con <- dbConnect(
+  MySQL(),
+  host = db_config$host,
+  port = db_config$port,
+  user = db_config$user,
+  password = db_config$password
+ )
+
+```
+
+```{r}
+# 3. Membuat database jika belum ada
+tryCatch({
+  dbExecute(con, glue("CREATE DATABASE IF NOT EXISTS {db_config$dbname}"))
+  message("Database ", db_config$dbname, " berhasil dibuat/ditemukan")
+}, error = function(e) {
+  message("Gagal membuat database: ", e$message)
+})
+```
+
+```{r}
+# 5. Buat koneksi dengan database yang sudah dibuat
+con <- dbConnect(
+  MySQL(),
+  host = db_config$host,
+  port = db_config$port,
+  user = db_config$user,
+  password = db_config$password,
+  dbname = db_config$dbname
+)
+
+```
+
+
+```{r}
+buku<-read.csv("D:/Manajemen Data Statistik/Data_Buku.csv")
+kat_buku<- read.csv("D:/Manajemen Data Statistik/kategori buku.csv", sep = ";")
+penerbit<- read.csv("D:/Manajemen Data Statistik/penerbit buku.csv", sep = ";")
+penulis<- read.csv("D:/Manajemen Data Statistik/penulis buku.csv", sep = ";")
+str(buku)
+```
+
+```{r}
+# 4. Membuat struktur tabel dengan perbaikan nama tabel dan foreign key
+table_definitions <- list(
+  
+  buku = "
+    CREATE TABLE IF NOT EXISTS buku (
+      id_buku VARCHAR(20) PRIMARY KEY,
+      judul_buku VARCHAR(255),
+      id_penulis VARCHAR(20),
+      id_penerbit VARCHAR(20),
+      id_kategori VARCHAR(20),
+      ISBN VARCHAR(50),
+      tahun_terbit VARCHAR(50),
+      jumlah_halaman INT,
+      link_buku TEXT,
+      deskripsi TEXT
+    )
+  ",
+  
+  kategori = "
+    CREATE TABLE IF NOT EXISTS kategori (
+      id_kategori VARCHAR(20) PRIMARY KEY,
+      nama_kategori VARCHAR(255)
+    )
+  ",
+
+  penerbit = "
+    CREATE TABLE IF NOT EXISTS penerbit (
+      id_penerbit VARCHAR(20) PRIMARY KEY,
+      nama_penerbit VARCHAR(255),
+      tempat_penerbit VARCHAR(255)
+    )
+  ",
+
+  penulis = "
+    CREATE TABLE IF NOT EXISTS penulis (
+      id_penulis VARCHAR(20) PRIMARY KEY,
+      nama_penulis VARCHAR(255),
+      id_penerbit VARCHAR(20),
+      FOREIGN KEY (id_penerbit) REFERENCES penerbit(id_penerbit)
+    )
+  "
+)
+
+# Menjalankan setiap query untuk membuat tabel
+for (table in table_definitions) {
+  dbExecute(con, table)
+}
+
+# Menambahkan Foreign Key ke tabel buku setelah semua tabel dibuat
+query_foreign_keys <- "
+ALTER TABLE buku 
+ADD FOREIGN KEY (id_penulis) REFERENCES penulis(id_penulis),
+ADD FOREIGN KEY (id_penerbit) REFERENCES penerbit(id_penerbit),
+ADD FOREIGN KEY (id_kategori) REFERENCES kategori(id_kategori);
+"
+dbExecute(con, query_foreign_keys)
+
+```
+
+```{r}
+# 3. Fungsi untuk memasukkan data dengan `INSERT INTO`
+insert_data <- function(con, table_name, data) {
+  for (i in 1:nrow(data)) {
+    values <- paste(sprintf("'%s'", data[i, ]), collapse = ", ")
+    query <- sprintf("INSERT INTO %s VALUES (%s)", table_name, values)
+    dbExecute(con, query)
+  }
+}
+
+# 4. Masukkan data ke database dalam urutan yang benar
+insert_data(con, "kategori", kat_buku)
+insert_data(con, "penerbit", penerbit)
+insert_data(con, "penulis", penulis)
+
+#Ada id kategori yang di data buku namun di data kategori belum terdefinisikan, sehingga pada data kategori akan ditambahkan id kategori tersebut dengan label "Belum Dikategorikan
+missing_kategori <- setdiff(buku$id_kategori, kat_buku$id_kategori)
+
+if (length(missing_kategori) > 0) {
+  for (id_kat in missing_kategori) {
+    query <- sprintf(
+      "INSERT INTO kategori (id_kategori, nama_kategori) VALUES ('%s', 'Belum Dikategorikan')",
+      id_kat
+    )
+    dbExecute(con, query)
+  }
+  
+  print("Kategori yang hilang telah ditambahkan dengan nama 'Belum Dikategorikan'")
+} else {
+  print("Semua kategori sudah ada, tidak perlu menambahkan data baru.")
+}
+
+missing_penerbit <- setdiff(buku$id_penerbit, penerbit$id_penerbit)
+if (length(missing_penerbit) > 0) {
+  for (id_penerbit in missing_penerbit) {
+    query <- sprintf(
+      "INSERT INTO penerbit (id_penerbit, nama_penerbit, tempat_penerbit) VALUES ('%s', 'Informasi Tidak Tersedia', 'Informasi Tidak Tersedia')",
+      id_penerbit
+    )
+    dbExecute(con, query)
+  }
+  
+  print("Penerbit yang hilang telah ditambahkan dengan nama 'Penerbit Tidak Diketahui'")
+} else {
+  print("Semua penerbit sudah ada, tidak perlu menambahkan data baru.")
+}
+
+missing_penulis <- setdiff(buku$id_penulis, penulis$id_penulis)
+
+if (length(missing_penulis) > 0) {
+  for (id_penulis in missing_penulis) {
+    query <- sprintf(
+      "INSERT INTO penulis (id_penulis, nama_penulis, id_penerbit) VALUES ('%s', 'Informasi Tidak Tersedia', NULL)",
+      id_penulis
+    )
+    dbExecute(con, query)
+  }
+  
+  print("Penulis yang hilang telah ditambahkan dengan nama 'Penulis Tidak Diketahui'")
+} else {
+  print("Semua penulis sudah ada, tidak perlu menambahkan data baru.")
+}
+
+
+
+# 6. Masukkan data ke tabel buku
+buku$jumlah_halaman[buku$jumlah_halaman == "Jumlah halaman tidak tersedia"] <- NA
+buku$jumlah_halaman <- as.integer(buku$jumlah_halaman)
+
+insert_data <- function(con, table_name, data, columns, numeric_cols = c()) {
+  for (i in 1:nrow(data)) {
+    values <- sapply(names(data), function(col) {
+      val <- data[i, col]
+      
+      # Jika NA atau kosong, ubah menjadi NULL
+      if (is.na(val) | val == "") {
+        return("NULL")
+      
+      # Jika kolom numerik, masukkan tanpa kutip
+      } else if (col %in% numeric_cols) {
+        return(val)
+      
+      # Jika kolom teks, escape kutip tunggal dan tambahkan kutip SQL
+      } else {
+        val <- gsub("'", "''", val)  # Escape kutip tunggal
+        return(sprintf("'%s'", val))
+      }
+    })
+    
+    values <- paste(values, collapse = ", ")
+    query <- sprintf("REPLACE INTO %s (%s) VALUES (%s)", table_name, columns, values)
+    
+    # Jalankan query
+    dbExecute(con, query)
+  }
+}
+
+
+
+insert_data(
+  con, "buku", buku, 
+  "id_buku, judul_buku, id_penulis, id_penerbit, id_kategori, ISBN, tahun_terbit, jumlah_halaman, link_buku, deskripsi",
+  numeric_cols = c("jumlah_halaman")
+)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
