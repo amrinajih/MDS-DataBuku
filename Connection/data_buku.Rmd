@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(DBI)
 library(RMySQL)
 library(glue)
+library(dplyr)
+library(readxl)
 ```
 
 ```{r}
@@ -66,11 +68,27 @@ con <- dbConnect(
 
 
 ```{r}
-buku<-read.csv("D:/Manajemen Data Statistik/Data_Buku.csv")
-kat_buku<- read.csv("D:/Manajemen Data Statistik/kategori buku.csv", sep = ";")
-penerbit<- read.csv("D:/Manajemen Data Statistik/penerbit buku.csv", sep = ";")
-penulis<- read.csv("D:/Manajemen Data Statistik/penulis buku.csv", sep = ";")
+buku<-read.csv("D:/Manajemen Data Statistik/Dasboard/MDS-najih/Data/Data_Buku.csv")
+info_tambahan <- read_xlsx("D:/Manajemen Data Statistik/Dasboard/MDS-najih/Data/InformasiTambahan.xlsx")
+kat_buku<- read.csv("D:/Manajemen Data Statistik/Dasboard/MDS-najih/Data/kategori buku.csv", sep = ";")
+penerbit<- read.csv("D:/Manajemen Data Statistik/Dasboard/MDS-najih/Data/penerbit buku.csv", sep = ";")
+penulis<- read.csv("D:/Manajemen Data Statistik/Dasboard/MDS-najih/Data/penulis buku.csv", sep = ";")
+
+buku <- buku %>% select(-ISBN,-tahun_terbit,-jumlah_halaman)
+buku <- buku %>%
+  left_join(info_tambahan %>% select(id_buku, ISBN), by = "id_buku")%>%
+  left_join(info_tambahan %>% select(id_buku, tahun_terbit), by = "id_buku")%>%
+  left_join(info_tambahan %>% select(id_buku, jumlah_halaman), by = "id_buku")%>%
+  left_join(info_tambahan %>% select(id_buku, Reviewer), by = "id_buku")%>%
+  left_join(info_tambahan %>% select(id_buku, rating), by = "id_buku")%>%
+  left_join(info_tambahan %>% select(id_buku, coverurl), by = "id_buku")
+
+buku$tahun_terbit<-as.character(buku$tahun_terbit)
+buku$Reviewer<-as.character(buku$Reviewer)
+buku$rating<-as.character(buku$rating)
+
 str(buku)
+
 ```
 
 ```{r}
@@ -86,9 +104,12 @@ table_definitions <- list(
       id_kategori VARCHAR(20),
       ISBN VARCHAR(50),
       tahun_terbit VARCHAR(50),
+      Reviewer VARCHAR(50),
+      rating VARCHAR(50),
       jumlah_halaman INT,
       link_buku TEXT,
-      deskripsi TEXT
+      deskripsi TEXT,
+      coverurl TEXT
     )
   ",
   
@@ -202,7 +223,8 @@ if (length(missing_penulis) > 0) {
 buku$jumlah_halaman[buku$jumlah_halaman == "Jumlah halaman tidak tersedia"] <- NA
 buku$jumlah_halaman <- as.integer(buku$jumlah_halaman)
 
-insert_data <- function(con, table_name, data, columns, numeric_cols = c()) {
+insert_data <- function(con, table_name, data, numeric_cols = c()) {
+  columns <- paste(names(data), collapse = ", ")
   for (i in 1:nrow(data)) {
     values <- sapply(names(data), function(col) {
       val <- data[i, col]
@@ -232,19 +254,9 @@ insert_data <- function(con, table_name, data, columns, numeric_cols = c()) {
 
 
 
-insert_data(
-  con, "buku", buku, 
-  "id_buku, judul_buku, id_penulis, id_penerbit, id_kategori, ISBN, tahun_terbit, jumlah_halaman, link_buku, deskripsi",
-  numeric_cols = c("jumlah_halaman")
-)
-
+insert_data(con, "buku", buku, numeric_cols = c("jumlah_halaman"))
+dbDisconnect(con)
 ```
-
-
-
-
-
-
 
 
 
