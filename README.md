@@ -10,7 +10,6 @@
 
 ## :bookmark_tabs: Menu
 
-- [Information](#pushpin-Information)
 - [About](#clipboard-About)
 - [Screenshot](#camera-Screenshot)
 - [Demo](#card_file_box-Demo)
@@ -21,8 +20,18 @@
 - [Folder Structure](#open_file_folder-Folder-Structure)
 - [Our Team](#heavy_heart_exclamation-Our-Team)
 
-## :pushpin: Information
-:heartpulse: HELLO... OUR BUKU LOVERS!
-WELCOME TO BUKUPEDIA! :wave:
+## :clipboard: About
+### **Project Description - Book Management Web Application**  
 
-**Here's a information about bukupedia :**
+This project is a **web-based book database management system** that enables users to efficiently search, categorize, and analyze book data sourced from Google Books. The platform provides an intuitive and structured interface for users to explore book references based on various criteria.  
+
+### **Key Features:**  
+📚 **Book Categories Distribution** – Visual representation of book categories to help users identify trends in various fields.  
+📊 **Publication Year Analysis** – A bar chart showcasing the number of books published each year, making it easier to analyze publication trends.  
+🔍 **Advanced Book Search** – Users can search for books based on title, author, publisher, category, or publication year.  
+📖 **Detailed Book Information** – Each book entry includes **title, author, publisher, category, publication year, page count, and ISBN**, along with a direct link for reference.  
+📈 **Statistical Insights** – Users can explore books with the **most pages**, calculate **average pages in a specific category**, and identify **publishers with the highest number of book releases**.  
+
+This application serves as a valuable tool for **students, researchers, and book enthusiasts**, making it easier to discover and analyze book-related data for educational and research purposes.  
+
+## :camera: Screenshot
