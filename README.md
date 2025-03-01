@@ -41,6 +41,9 @@ This application serves as a valuable tool for **students, researchers, and book
 
 The dashboard provides a visual overview of book data, including a pie chart of category distribution, a bar chart of publication trends, and a searchable table of book details such as title, author, publisher, year, ISBN, and page count. Users can efficiently explore book references, analyze trends, and access direct links for further reading.
 
+<p align="center">
+  <img width="900" height="500" src="image/dropdown">
+</p>
 
 The dropdown menu in the search bar allows users to filter book searches based on specific criteria. Users can choose "Title" to search by book title, "Author" to find books by a specific writer, "Publisher" to filter by publishing house, or "Category" to browse books based on their genre. Selecting "All" enables a broader search across all available fields. This feature helps users quickly locate relevant books based on their preferred search method.
 
