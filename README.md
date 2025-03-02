@@ -70,3 +70,80 @@ The **Entity-Relationship Diagram (ERD)** illustrates the database structure of 
 
 Contains the tables and SQL DDL (CREATE) syntax.
 
+### :abacus: Create Database  
+The **Bukupedia** database stores information that represents interconnected book-related attributes, including **titles, authors, publishers, categories, and publication details**, ensuring efficient data management and retrieval for book searches and analysis.
+
+```sql
+# Konfigurasi Database DBngin
+db_config <- list(
+ host = "127.0.0.1",
+  port = 3306,          # Port MySQL di DBngin
+  user = "root",
+  password = "",
+  dbname = "mds_db_buku"    # Nama database yang akan dibuat
+)
+
+# Membuat Database
+tryCatch({
+  dbExecute(con, glue("CREATE DATABASE IF NOT EXISTS {db_config$dbname}"))
+  message("Database ", db_config$dbname, " berhasil dibuat/ditemukan")
+}, error = function(e) {
+  message("Gagal membuat database: ", e$message)
+})
+```
+
+### :books: Create Table Book 
+The **Book** table provides users with detailed information about books available in **Bukupedia**. Users can access essential details such as **book ID, title, author, publisher, category, publication year, ISBN, page count, and a reference link**. This table serves as the core of the book database, enabling efficient book searches and management. Here is a description for each column in the **Book** table.
+
+| Attribute                  | Type                   | Description                     		                  |
+|:---------------------------|:-----------------------|:------------------------------------------------------|
+| id_buku                    | character varying(20)  | Unique identifier for each book  		                  |
+| judul_buku                 | character varying(255) | Title of the book              	  	                  |
+| id_penulis                 | character varying(20)	| Identifier for the author of the book                 |	
+| id_penerbit                | character varying(20)  | Identifier for the publisher of the book              |
+| id_kategori	               | character varying(20)  | Identifier for the book's category/genre              |
+| ISBN		    	             | character varying(50)  | International Standard Book Number (ISBN)             |
+| tahun_terbit		    	     | character varying(50)  | Year the book was published                           |
+| Reviewer		        	     | character varying(50)  | Name of the person or organization reviewing the book |
+| rating		    	           | character varying(50)  | Book rating based on reviews or user feedback         |
+| jumlah_halaman		    	   | integer                | Total number of pages in the book                     |
+| link_buku		    	         | text                   | Direct link to the book reference or source           |
+| deskripsi		    	         | text                   | Short description or summary of the book              |
+| coverurl	    	           | text                   | URL of the book cover image                           |
+
+```sql
+buku = "
+    CREATE TABLE IF NOT EXISTS buku (
+      id_buku VARCHAR(20) PRIMARY KEY,
+      judul_buku VARCHAR(255),
+      id_penulis VARCHAR(20),
+      id_penerbit VARCHAR(20),
+      id_kategori VARCHAR(20),
+      ISBN VARCHAR(50),
+      tahun_terbit VARCHAR(50),
+      Reviewer VARCHAR(50),
+      rating VARCHAR(50),
+      jumlah_halaman INT,
+      link_buku TEXT,
+      deskripsi TEXT,
+      coverurl TEXT
+    )
+  "
+```
+
+### :file_folder: Create Table Category 
+The **Category** table stores information about the different book categories available in **Bukupedia**. It consists of a **unique category ID** and a **category name**, which help classify books into specific genres or subjects. This table ensures that books can be easily organized and searched based on their respective categories. Below is a description of the **Category** table.
+
+| Attribute                  | Type                   | Description                     		                  |
+|:---------------------------|:-----------------------|:------------------------------------------------------|
+| id_kategori                | character varying(20)  | Unique identifier for each book category              |
+| nama_kategori              | character varying(255) | Name of the book category      	  	                  |
+
+```sql
+  kategori = "
+    CREATE TABLE IF NOT EXISTS kategori (
+      id_kategori VARCHAR(20) PRIMARY KEY,
+      nama_kategori VARCHAR(255)
+    )
+  "
+```
