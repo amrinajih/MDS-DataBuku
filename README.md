@@ -48,7 +48,7 @@ The dashboard provides a visual overview of book data, including a pie chart of 
 The dropdown menu in the search bar allows users to filter book searches based on specific criteria. Users can choose "Title" to search by book title, "Author" to find books by a specific writer, "Publisher" to filter by publishing house, or "Category" to browse books based on their genre. Selecting "All" enables a broader search across all available fields. This feature helps users quickly locate relevant books based on their preferred search method.
 
 <p align="center">
-  <img width="900" height="500" src="image/booklist">
+  <img width="900" height="200" src="image/booklist">
 </p>
 
 The search bar in the Daftar Buku (Book List) section allows users to search for books based on any available information in the table. Users can enter a book title, author name, publisher, category, publication year, ISBN, or page count to quickly filter and find specific books. This feature makes it easy to locate relevant books without manually browsing through the entire list.
@@ -60,3 +60,13 @@ The search bar in the Daftar Buku (Book List) section allows users to search for
 ## :floppy_disk: Database Scheme
 
 ## :rotating_light: ERD
+The **Entity-Relationship Diagram (ERD)** illustrates the database structure of the book management system, showcasing the relationships between key entities such as **books, authors, publishers, and categories**. This diagram helps in understanding how data is organized, stored, and connected, ensuring efficient retrieval and management of book-related information within the application.
+
+<p align="center">
+  <img width="1100" height="650" src="image/ERD.png">
+</p>
+
+## :heavy_check_mark: Data Description
+
+Contains the tables and SQL DDL (CREATE) syntax.
+
