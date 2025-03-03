@@ -147,3 +147,43 @@ The **Category** table stores information about the different book categories av
     )
   "
 ```
+
+### :office: Create Table Publisher
+The Publisher table stores information about the different book publishers available in Bukupedia. It consists of a unique publisher ID and a publisher name, which help categorize books based on their respective publishing houses. This table ensures that books can be easily filtered and searched according to their publishers. Below is a description of the Publisher table.
+
+| Attribute                  | Type                   | Description                     		                  |
+|:---------------------------|:-----------------------|:------------------------------------------------------|
+| id_penerbit                | character varying(20)  | Unique identifier for each publisher                  |
+| nama_penerbit              | character varying(255) | Name of the publisher         	  	                  |
+| tempat_penerbit            | character varying(255) | Location or place where the publisher is based        |
+
+```sql
+penerbit = "
+    CREATE TABLE IF NOT EXISTS penerbit (
+      id_penerbit VARCHAR(20) PRIMARY KEY,
+      nama_penerbit VARCHAR(255),
+      tempat_penerbit VARCHAR(255)
+    )
+  "
+```
+
+### :memo: Create Table Author
+The Author table stores information about the different book authors available in Bukupedia. It consists of a unique author ID, an author name, and an author's nationality, which help categorize books based on their respective writers. This table ensures that books can be easily filtered and searched according to their authors. Below is a description of the Author table.
+
+| Attribute                  | Type                   | Description                     		                  |
+|:---------------------------|:-----------------------|:------------------------------------------------------|
+| id_penulis                 | character varying(20)  | Unique identifier for each author                     |
+| nama_penulis               | character varying(255) | Name of the author            	  	                  |
+| id_penerbit                | character varying(20)  | Unique identifier for each publisher                  |
+
+```sql
+penulis = "
+    CREATE TABLE IF NOT EXISTS penulis (
+      id_penulis VARCHAR(20) PRIMARY KEY,
+      nama_penulis VARCHAR(255),
+      id_penerbit VARCHAR(20),
+      FOREIGN KEY (id_penerbit) REFERENCES penerbit(id_penerbit)
+    )
+  "
+```
+
