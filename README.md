@@ -188,7 +188,29 @@ penulis = "
 ```
 
 ## :open_file_folder: Folder Structure
-```sql
+```
+📂 MDS-DataBuku
+├── 📁 Connection
+│    ├── 📄 data_buku.Rmd
+├── 📁 Data
+│    ├── 📄 Data_Buku.csv
+│    ├── 📄 InformasiTambahan.xlsx
+│    ├── 📄 kategori buku.csv
+│    ├── 📄 penerbit buku.csv
+│    ├── 📄 penulis buku.csv
+├── 📁 image
+│    ├── 📄 ERD_1.png
+│    ├── 📄 booklist
+│    ├── 📄 dashboard
+│    ├── 📄 dropdown
+│    ├── 📄 heaader.png
+│    ├── 📄 team.png
+├── 📁 literatur_elektronik
+│    ├── 📄 app.R
+├── 📄 .gitignore
+├── 📄 MDS-najih.Rproj
+├── 📄 README.md
+└── 📄 app.R
 ```
 
 ## :star2: Our Team
