@@ -63,7 +63,7 @@ The search bar in the Daftar Buku (Book List) section allows users to search for
 The **Entity-Relationship Diagram (ERD)** illustrates the database structure of the book management system, showcasing the relationships between key entities such as **books, authors, publishers, and categories**. This diagram helps in understanding how data is organized, stored, and connected, ensuring efficient retrieval and management of book-related information within the application.
 
 <p align="center">
-  <img width="1100" height="650" src="image/ERD.png">
+  <img width="1100" height="650" src="image/ERD_1.png">
 </p>
 
 ## :heavy_check_mark: Data Description
@@ -192,3 +192,6 @@ penulis = "
 ```
 
 ## :star2: Our Team
+<p align="center">
+  <img width="900" height="500" src="image/team.png">
+</p>
