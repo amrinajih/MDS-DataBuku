@@ -104,7 +104,7 @@ The **Book** table provides users with detailed information about books availabl
 | id_kategori	               | character varying(20)  | Identifier for the book's category/genre              |
 | ISBN		    	             | character varying(50)  | International Standard Book Number (ISBN)             |
 | tahun_terbit		    	     | character varying(50)  | Year the book was published                           |
-| Reviewer		        	     | character varying(50)  | Name of the person or organization reviewing the book |
+| Reviewer		        	     | character varying(50)  | Number of users who have reviewed the book            |
 | rating		    	           | character varying(50)  | Book rating based on reviews or user feedback         |
 | jumlah_halaman		    	   | integer                | Total number of pages in the book                     |
 | link_buku		    	         | text                   | Direct link to the book reference or source           |
@@ -187,3 +187,8 @@ penulis = "
   "
 ```
 
+## :open_file_folder: Folder Structure
+```sql
+```
+
+## :star2: Our Team
