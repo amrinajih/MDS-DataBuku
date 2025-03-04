@@ -210,6 +210,7 @@ penulis = "
 │    ├── 📄 penulis buku.csv
 ├── 📁 image
 │    ├── 📄 ERD_1.png
+│    ├── 📄 Schema.png
 │    ├── 📄 booklist
 │    ├── 📄 dashboard
 │    ├── 📄 dropdown
