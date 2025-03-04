@@ -63,6 +63,11 @@ The link of our shinnyapps or dashboard project :
 - **Database:** MySQl
 
 ## :floppy_disk: Database Scheme
+The structure describes the relationships between tables in Bukupedia, including primary keys such as book, author, publisher, category, and foreign keys that link these entities together.
+
+<p align="center">
+  <img width="1100" height="650" src="image/Schema.png">
+</p>
 
 ## :rotating_light: ERD
 The **Entity-Relationship Diagram (ERD)** illustrates the database structure of the book management system, showcasing the relationships between key entities such as **books, authors, publishers, and categories**. This diagram helps in understanding how data is organized, stored, and connected, ensuring efficient retrieval and management of book-related information within the application.
