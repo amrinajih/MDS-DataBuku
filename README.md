@@ -1,12 +1,12 @@
 
 <p align="center">
-  <img width="1050" height="600" src="image/header.png">
+  <img width="1000" height="600" src="image/header.png">
 </p>
 
 <div align="center">
 
 # bukupedia
-# _"Cari Buku? Tenang, di sini nggak bakal ada plot twist kayak di hidupmu."_
+# _"A smarter way to search and explore books."_
 </div>
 
 ## :bookmark_tabs: Menu
@@ -14,12 +14,12 @@
 - [About](#clipboard-About)
 - [Screenshot](#camera-Screenshot)
 - [Demo](#card_file_box-Demo)
-- [Requirements](#exclamation-Requirements)
+- [Software](#computer-Software)
 - [Database Scheme](#floppy_disk-Database-Scheme)
 - [ERD](#rotating_light-ERD)
 - [Data Description](#heavy_check_mark-Data-Description)
 - [Folder Structure](#open_file_folder-Folder-Structure)
-- [Our Team](#heavy_heart_exclamation-Our-Team)
+- [Team](#star2-Team)
 
 ## :clipboard: About
 ### **Project Description - Book Management Web Application**  
@@ -55,8 +55,12 @@ The dropdown menu in the search bar allows users to filter book searches based o
 The search bar in the Daftar Buku (Book List) section allows users to search for books based on any available information in the table. Users can enter a book title, author name, publisher, category, publication year, ISBN, or page count to quickly filter and find specific books. This feature makes it easy to locate relevant books without manually browsing through the entire list.
 
 ## :card_file_box: Demo
+The link of our shinnyapps or dashboard project : 
 
-## :exclamation: Requirements
+## :computer: Software
+- **Frontend:** RShiny
+- **Backend:** RStudio
+- **Database:** MySQl
 
 ## :floppy_disk: Database Scheme
 
@@ -189,10 +193,32 @@ penulis = "
 ```
 
 ## :open_file_folder: Folder Structure
-```sql
+```
+📂 MDS-DataBuku
+├── 📁 Connection
+│    ├── 📄 data_buku.Rmd
+├── 📁 Data
+│    ├── 📄 Data_Buku.csv
+│    ├── 📄 InformasiTambahan.xlsx
+│    ├── 📄 kategori buku.csv
+│    ├── 📄 penerbit buku.csv
+│    ├── 📄 penulis buku.csv
+├── 📁 image
+│    ├── 📄 ERD_1.png
+│    ├── 📄 booklist
+│    ├── 📄 dashboard
+│    ├── 📄 dropdown
+│    ├── 📄 heaader.png
+│    ├── 📄 team.png
+├── 📁 literatur_elektronik
+│    ├── 📄 app.R
+├── 📄 .gitignore
+├── 📄 MDS-najih.Rproj
+├── 📄 README.md
+└── 📄 app.R
 ```
 
-## :star2: Our Team
+## :star2: Team
 <p align="center">
   <img width="900" height="500" src="image/team.png">
 </p>
