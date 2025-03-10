@@ -61,6 +61,7 @@ load_books <- function() {
   
   books <- dbGetQuery(conn, query)
   dbDisconnect(conn)
+  books$rating <- as.numeric(books$rating)
   return(books)
 }
 
@@ -124,7 +125,7 @@ ui <- fluidPage(
   # Navbar Minimalis
   div(class = "navbar-fixed",
       fluidRow(
-        column(3, h4("InfoBuku", class = "navbar-title", style = "color: white;")),
+        column(3, h4("bukupedia", class = "navbar-title", style = "color: white;")),
         column(6, div(class = "search-bar",
                       selectInput("search_type", label = NULL, 
                                   choices = c("All", "Title", "Author", "Publisher", "Category"), 
@@ -203,8 +204,17 @@ server <- function(input, output, session) {
       rename(Jumlah = n)
     
     plot_ly(kategori_data, labels = ~nama_kategori, values = ~Jumlah, type = "pie",
-            textinfo = "label+percent", insidetextfont= list(color = "#FFFFFF")) %>%
-      layout(title = "Distribusi Kategori Buku")
+            textinfo = "percent+label",  
+            textposition = "inside",  
+            insidetextfont = list(color = "#FFFFFF", size = 12),  
+            outsidetextfont = list(size = 10),  
+            marker = list(line = list(color = "black", width = 1))) %>%  #
+      layout(
+        title = "Distribusi Kategori Buku",
+        showlegend = TRUE,  
+        legend = list(x = 1.05, y = 0.5),  
+        margin = list(l = 20, r = 150, t = 50, b = 20)  
+      )
   })
   
   # Bar Chart (Jumlah Buku per Tahun)
@@ -227,9 +237,15 @@ server <- function(input, output, session) {
     buku_data() %>%
       mutate(
         judul_buku = sprintf('<a href="#" onclick="Shiny.setInputValue(\'selected_book\', \'%s\', {priority: \'event\'});">%s</a>', id_buku, judul_buku),
-        link_buku = sprintf('<a href="%s" target="_blank">Get</a>', link_buku)
+        link_buku = sprintf('<a href="%s" target="_blank">Get</a>', link_buku),
+        # Konversi rating ke numerik dengan aman
+        rating = suppressWarnings(as.numeric(trimws(rating))), 
+        
+        # Ganti NA atau nilai kosong dengan "N/A", dan batasi rating dalam rentang 0-5
+        rating_display = ifelse(is.na(rating) | rating == "" | rating < 0 | rating > 5, 
+                                "N/A", sprintf("%.1f", rating))
       ) %>%
-      select(judul_buku, nama_penulis, nama_penerbit, nama_kategori, tahun_terbit, ISBN, jumlah_halaman, link_buku) %>%
+      select(judul_buku, nama_penulis, nama_penerbit, nama_kategori, tahun_terbit, ISBN, jumlah_halaman, rating_display, link_buku) %>%
       datatable(escape = FALSE, options = list(pageLength = 5))
   })
   
@@ -258,6 +274,7 @@ server <- function(input, output, session) {
                strong("ISBN:"), p(selected_data$ISBN),
                strong("Tahun Terbit:"), p(selected_data$tahun_terbit),
                strong("Jumlah Halaman:"), p(selected_data$jumlah_halaman),
+               strong("Jumlah Review:"), p(selected_data$Reviewer),
                strong("Deskripsi Buku:"), p(selected_data$deskripsi),
                strong("Link Buku:"), a("Google Play", href = selected_data$link_buku, target = "_blank")
         )
