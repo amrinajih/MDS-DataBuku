@@ -19,6 +19,7 @@
 - [ERD](#rotating_light-ERD)
 - [Data Description](#heavy_check_mark-Data-Description)
 - [Folder Structure](#open_file_folder-Folder-Structure)
+- [Workflow](#hourglass-Workflow)
 - [Team](#star2-Team)
 
 ## :clipboard: About
@@ -223,6 +224,13 @@ penulis = "
 ├── 📄 README.md
 └── 📄 app.R
 ```
+
+## :hourglass: Workflow
+1. DataBase Manager membuat data di SQL dari file CSV/excel, cleaning data dan sebagainya (output folder data dan connection)
+2. DesignerDB membuat ERD dan relasinya (output ERD)
+3. Frontend membuat tampilan dashboard (output app.R bagian UI)
+4. Backend menjadi jembatan antara DB manager dan FrontEnd agar data dapat dimasukkan kedalam dashboard (output app.R bagian server)
+5. Technical Writer mendokumentasikan dashboard dalam sebuat artikel (output Readme)
 
 ## :star2: Team
 <p align="center">
