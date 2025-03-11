@@ -56,7 +56,9 @@ The dropdown menu in the search bar allows users to filter book searches based o
 The search bar in the Daftar Buku (Book List) section allows users to search for books based on any available information in the table. Users can enter a book title, author name, publisher, category, publication year, ISBN, or page count to quickly filter and find specific books. This feature makes it easy to locate relevant books without manually browsing through the entire list.
 
 ## :card_file_box: Demo
-The link of our shinnyapps or dashboard project : https://amrinajih.shinyapps.io/literatur_elektronik/
+The link of our Shiny apps or dashboard project: [Shiny App Online](https://amrinajih.shinyapps.io/literatur_elektronik/)
+
+If running locally, access it here: [Local Shiny App](http://127.0.0.1:5347/)
 
 ## :computer: Software
 - **Frontend:** RShiny
